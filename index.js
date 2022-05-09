@@ -35,6 +35,24 @@ async function run() {
             const phone = await productCollection.findOne(query);
             res.send(phone);
         })
+        //update quantity
+        app.put('/phones/:id', async (req,res) =>{
+            const id = req.params.id;
+            const updatedPhone = req.body;
+            const query = {_id: ObjectId(id)};
+            const options = { upsert: true };
+            const updatedDoc = {
+                $set: {
+                    quantity: updatedPhone.quantity,
+                },
+            };
+            const result = await productCollection.updateOne(
+                query,
+                updatedDoc,
+                options
+            );
+            res.send(result);
+        });
     }
     finally{
 
