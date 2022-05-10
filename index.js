@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const res = require('express/lib/response');
 require('dotenv').config();
 const port = process.env.PORT || 5000;
 const app = express();
@@ -53,6 +54,21 @@ async function run() {
             );
             res.send(result);
         });
+
+        // POST data to add service
+        app.post('/phones', async (req, res) =>{
+            const newPhone = req.body;
+            const result = await productCollection.insertOne(newPhone);
+            res.send(result);
+        });
+
+        // DELETE data 
+        app.delete('/phones/:id', async (req,res) =>{
+            const id = req.params.id;
+            const query = { _id: ObjectId(id)};
+            const result = await productCollection.deleteOne(query);
+            res.send(result);
+        }) 
     }
     finally{
 
