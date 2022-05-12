@@ -29,6 +29,14 @@ async function run() {
             res.send(phones);
         });
 
+        app.get('/myitems', async (req,res) =>{
+            const email = req.query.email;
+            const query = {email: email};
+            const cursor = productCollection.find(query);
+            const phone = await cursor.toArray();
+            res.send(phone);
+        })
+
         //load one data
         app.get('/phones/:id', async(req,res) =>{
             const id = req.params.id;
